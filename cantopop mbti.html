@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>你的广东歌人格</title>
+    <!-- html2canvas for poster -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        :root {
+            --bg-deep: #0B1020;
+            --bg-purple: #1A0F2E;
+            --gold: #D4A76A;
+            --gold-glow: rgba(212, 167, 106, 0.3);
+            --text-light: #F0E8E0;
+            --text-muted: #A09890;
+            --card-bg: rgba(26, 15, 46, 0.75);
+            --border-glow: rgba(212, 167, 106, 0.15);
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-light);
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        /* ===== APP CONTAINER ===== */
+        #app {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+            background: var(--bg-deep);
+            background-image:
+                radial-gradient(ellipse at 30% 10%, rgba(26, 15, 46, 0.6) 0%, transparent 70%),
+                radial-gradient(ellipse at 70% 90%, rgba(11, 16, 32, 0.8) 0%, transparent 60%);
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease, transform 0.5s ease;
+            transform: scale(0.98);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .page.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+        .page.exit {
+            opacity: 0;
+            transform: scale(0.96);
+            pointer-events: none;
+        }
+
+        /* ===== P0: 启动页 ===== */
+        #page-start {
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(26, 15, 46, 0.9) 0%, var(--bg-deep) 80%),
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iODAwIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImciIGN4PSI1MCUiIGN5PSI0MCUiIHI9IjcwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6cmdiYSgyNiwxNSw0NiwwLjUpIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDExLDE2LDMyLDApIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI4MDAiIGZpbGw9InVybCgjZykiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            justify-content: center;
+            text-align: center;
+        }
+        #page-start .start-bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 167, 106, 0.08) 0%, transparent 70%);
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+        .start-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(212, 167, 106, 0.15), 0 0 80px rgba(212, 167, 106, 0.05);
+            position: relative;
+            z-index: 2;
+            margin-bottom: 12px;
+        }
+        .start-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .start-quote {
+            font-size: 15px;
+            color: rgba(240, 232, 224, 0.7);
+            line-height: 2;
+            letter-spacing: 2px;
+            max-width: 300px;
+            margin: 0 auto 36px;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
+        }
+        .start-quote span {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            letter-spacing: 4px;
+        }
+        .btn-start {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 48px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 6px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+            background: rgba(212, 167, 106, 0.04);
+            backdrop-filter: blur(4px);
+            font-family: inherit;
+        }
+        .btn-start:hover {
+            background: rgba(212, 167, 106, 0.12);
+            box-shadow: 0 0 40px rgba(212, 167, 106, 0.08);
+            transform: scale(1.02);
+        }
+        .btn-start:active {
+            transform: scale(0.96);
+        }
+
+        /* raindrops */
+        .rain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        .rain-drop {
+            position: absolute;
+            width: 1px;
+            background: rgba(212, 167, 106, 0.15);
+            animation: rainFall linear infinite;
+        }
+        @keyframes rainFall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 20px));
+                opacity: 0;
+            }
+        }
+
+        /* ===== P1: 答题页 ===== */
+        #page-quiz {
+            padding: 16px 16px 20px;
+            justify-content: flex-start;
+            padding-top: 20px;
+            background: var(--bg-deep);
+        }
+        .quiz-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px 16px;
+            flex-shrink: 0;
+        }
+        .quiz-progress-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+        .quiz-progress-text strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .quiz-progress-bar {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold), #E8C88A);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        .quiz-question {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            line-height: 1.6;
+            width: 100%;
+            text-align: center;
+            padding: 12px 0 20px;
+            flex-shrink: 0;
+            min-height: 60px;
+        }
+        .quiz-options {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 8px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 14px;
+            color: rgba(240, 232, 224, 0.85);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            min-height: 52px;
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+        .quiz-option .opt-label {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        .quiz-option:hover {
+            background: rgba(212, 167, 106, 0.05);
+            border-color: rgba(212, 167, 106, 0.15);
+            transform: translateX(2px);
+        }
+        .quiz-option:active {
+            transform: scale(0.97);
+        }
+        .quiz-option.selected {
+            background: rgba(212, 167, 106, 0.08);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 167, 106, 0.04);
+        }
+        .quiz-option.selected .opt-label {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212, 167, 106, 0.1);
+        }
+
+        /* ===== P2: 加载页 ===== */
+        #page-loading {
+            background: var(--bg-deep);
+            text-align: center;
+            justify-content: center;
+            gap: 24px;
+        }
+        .loading-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 167, 106, 0.08);
+            border-top-color: var(--gold);
+            animation: spin 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            position: relative;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .loading-ring::after {
+            content: '♫';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            color: var(--gold);
+            opacity: 0.6;
+            animation: pulseNote 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseNote {
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+        .loading-text em {
+            color: var(--gold);
+            font-style: normal;
+            font-weight: 400;
+        }
+        .loading-names {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.08);
+            letter-spacing: 8px;
+            font-weight: 300;
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+        .loading-names .name-flash {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            white-space: nowrap;
+            font-size: 13px;
+            color: rgba(212, 167, 106, 0.2);
+            letter-spacing: 4px;
+        }
+        .loading-names .name-flash.show {
+            opacity: 1;
+        }
+
+        /* ===== P3: 结果页 ===== */
+        #page-result {
+            padding: 20px 16px 16px;
+            justify-content: flex-start;
+            overflow-y: auto;
+            background: var(--bg-deep);
+        }
+        .result-scroll {
+            width: 100%;
+            max-width: 440px;
+            padding-bottom: 30px;
+        }
+        .result-badge {
+            text-align: center;
+            padding: 12px 0 4px;
+        }
+        .result-badge .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 6px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+        .result-badge .name {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 50px rgba(212, 167, 106, 0.08);
+            letter-spacing: 4px;
+            margin: 2px 0 0;
+        }
+        .result-badge .sub-name {
+            font-size: 16px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            font-weight: 300;
+            margin-top: -2px;
+        }
+        .result-badge .match {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+        .result-badge .match strong {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .result-divider {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 16px auto;
+            opacity: 0.3;
+        }
+
+        /* DNA条形图 */
+        .dna-section {
+            width: 100%;
+            padding: 4px 0 12px;
+        }
+        .dna-section .dna-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .dna-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .dna-item .dna-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 48px;
+            flex-shrink: 0;
+            text-align: right;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        .dna-item .dna-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .dna-item .dna-track .dna-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, rgba(212, 167, 106, 0.3), var(--gold));
+            transition: width 1.2s ease;
+            width: 0%;
+        }
+        .dna-item .dna-pct {
+            font-size: 11px;
+            color: var(--text-muted);
+            width: 34px;
+            flex-shrink: 0;
+            font-weight: 300;
+            text-align: right;
+        }
+
+        /* 灵魂歌单 */
+        .playlist-section {
+            width: 100%;
+            padding: 8px 0 12px;
+        }
+        .playlist-section .pl-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .playlist-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .playlist-tags .tag {
+            background: rgba(212, 167, 106, 0.06);
+            border: 1px solid rgba(212, 167, 106, 0.08);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.7);
+            letter-spacing: 1px;
+            font-weight: 300;
+            transition: all 0.3s ease;
+        }
+        .playlist-tags .tag:hover {
+            background: rgba(212, 167, 106, 0.1);
+            border-color: rgba(212, 167, 106, 0.2);
+        }
+
+        /* 人格解析 */
+        .analysis-section {
+            width: 100%;
+            padding: 8px 0 12px;
+        }
+        .analysis-section .an-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .analysis-section .an-text {
+            font-size: 14px;
+            color: rgba(240, 232, 224, 0.8);
+            line-height: 2;
+            text-align: center;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+            padding: 0 4px;
+        }
+        .analysis-section .an-text em {
+            color: var(--gold);
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        /* 关键词 */
+        .keywords-section {
+            width: 100%;
+            padding: 8px 0 12px;
+        }
+        .keywords-section .kw-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .keywords-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .keywords-tags .kw {
+            background: rgba(212, 167, 106, 0.04);
+            border: 1px solid rgba(212, 167, 106, 0.06);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.5);
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* 代表歌词 */
+        .lyric-section {
+            width: 100%;
+            padding: 8px 0 16px;
+        }
+        .lyric-section .ly-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .lyric-section .ly-text {
+            font-size: 14px;
+            color: rgba(240, 232, 224, 0.6);
+            line-height: 2;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 300;
+            padding: 12px 16px;
+            border-left: 1px solid rgba(212, 167, 106, 0.08);
+            border-right: 1px solid rgba(212, 167, 106, 0.08);
+            border-radius: 4px;
+            font-style: italic;
+        }
+        .lyric-section .ly-text .source {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: normal;
+            margin-top: 6px;
+            letter-spacing: 2px;
+            opacity: 0.5;
+        }
+
+        /* 优点/风险 */
+        .traits-section {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 8px 0 12px;
+        }
+        .traits-section .trait-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .traits-section .trait-box .trait-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            font-weight: 300;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .traits-section .trait-box .trait-items {
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.6);
+            line-height: 1.8;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        .traits-section .trait-box.good {
+            border-color: rgba(212, 167, 106, 0.06);
+        }
+        .traits-section .trait-box.risk {
+            border-color: rgba(255, 100, 100, 0.06);
+        }
+        .traits-section .trait-box.risk .trait-label {
+            color: rgba(255, 150, 150, 0.4);
+        }
+        .traits-section .trait-box.risk .trait-items {
+            color: rgba(255, 150, 150, 0.3);
+        }
+
+        /* 推荐人格 */
+        .recommend-section {
+            width: 100%;
+            padding: 8px 0 12px;
+            text-align: center;
+        }
+        .recommend-section .rec-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .recommend-section .rec-items {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .recommend-section .rec-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.5);
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        .recommend-section .rec-item .rec-name {
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        /* 按钮 - 分享 */
+        .result-actions {
+            width: 100%;
+            display: flex;
+            gap: 12px;
+            padding: 16px 0 8px;
+            justify-content: center;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            padding: 12px 28px;
+            font-size: 13px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 2px;
+            font-weight: 300;
+            flex: 1;
+            max-width: 180px;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary {
+            background: rgba(212, 167, 106, 0.08);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 12px 28px;
+            font-size: 13px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 2px;
+            font-weight: 400;
+            flex: 1;
+            max-width: 180px;
+        }
+        .btn-primary:hover {
+            background: rgba(212, 167, 106, 0.15);
+            box-shadow: 0 0 40px rgba(212, 167, 106, 0.04);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== P4: 海报页 ===== */
+        #page-poster {
+            padding: 0;
+            background: var(--bg-deep);
+            justify-content: center;
+            overflow: hidden;
+        }
+        .poster-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 9 / 16;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-deep);
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(26, 15, 46, 0.8) 0%, var(--bg-deep) 80%);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(212, 167, 106, 0.04);
+            flex-shrink: 0;
+        }
+        .poster-container .poster-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 60% 80%, rgba(26, 15, 46, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 20%, rgba(11, 16, 32, 0.9) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .poster-container .poster-neon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 70% 30%, rgba(212, 167, 106, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .poster-container .poster-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+        .poster-container .poster-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 28px;
+            text-align: center;
+        }
+        .poster-content .p-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 6px;
+            font-weight: 300;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .poster-content .p-name-big {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 60px rgba(212, 167, 106, 0.06);
+            letter-spacing: 6px;
+            line-height: 1.2;
+        }
+        .poster-content .p-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            font-weight: 300;
+            margin-top: 2px;
+        }
+        .poster-content .p-match {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+        .poster-content .p-match strong {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 22px;
+        }
+        .poster-content .p-divider {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 14px auto;
+            opacity: 0.2;
+        }
+        .poster-content .p-tagline {
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.3);
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+        .poster-content .p-lyric {
+            font-size: 12px;
+            color: rgba(240, 232, 224, 0.2);
+            line-height: 1.8;
+            letter-spacing: 1px;
+            font-weight: 300;
+            max-width: 260px;
+            margin-top: 6px;
+            font-style: italic;
+        }
+        .poster-content .p-footer {
+            margin-top: auto;
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.04);
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+
+        .poster-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 380px;
+            justify-content: center;
+        }
+        .poster-actions .btn-poster {
+            background: rgba(212, 167, 106, 0.06);
+            border: 1px solid rgba(212, 167, 106, 0.08);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            font-size: 13px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 2px;
+            font-weight: 300;
+            flex: 1;
+            max-width: 160px;
+        }
+        .poster-actions .btn-poster:hover {
+            background: rgba(212, 167, 106, 0.1);
+            border-color: rgba(212, 167, 106, 0.15);
+        }
+        .poster-actions .btn-poster.primary {
+            background: rgba(212, 167, 106, 0.08);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .poster-actions .btn-poster.primary:hover {
+            background: rgba(212, 167, 106, 0.15);
+        }
+        .poster-actions .btn-poster:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== 隐藏人格标签 ===== */
+        .hidden-badge {
+            display: inline-block;
+            font-size: 10px;
+            color: rgba(212, 167, 106, 0.3);
+            border: 1px solid rgba(212, 167, 106, 0.06);
+            border-radius: 20px;
+            padding: 2px 14px;
+            letter-spacing: 2px;
+            font-weight: 300;
+            margin-top: 4px;
+        }
+
+        /* ===== 通用 ===== */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 380px) {
+            .start-title {
+                font-size: 22px;
+                letter-spacing: 4px;
+            }
+            .quiz-question {
+                font-size: 16px;
+            }
+            .quiz-option {
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+            .result-badge .name {
+                font-size: 26px;
+            }
+            .poster-content .p-name-big {
+                font-size: 28px;
+            }
+        }
+        @media (min-width: 481px) {
+            #app {
+                border-left: 1px solid rgba(255, 255, 255, 0.02);
+                border-right: 1px solid rgba(255, 255, 255, 0.02);
+                box-shadow: 0 0 120px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* ===== scrollable result ===== */
+        #page-result::-webkit-scrollbar {
+            width: 2px;
+        }
+        #page-result::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #page-result::-webkit-scrollbar-thumb {
+            background: rgba(212, 167, 106, 0.15);
+            border-radius: 4px;
+        }
+
+        /* 隐藏人格特殊样式 */
+        .hidden-result .result-badge .name {
+            background: linear-gradient(135deg, var(--gold), #E8C88A, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hidden-result .result-badge .sub-name {
+            color: rgba(212, 167, 106, 0.5);
+        }
+        .hidden-badge-glow {
+            display: inline-block;
+            font-size: 10px;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 2px 14px;
+            letter-spacing: 2px;
+            font-weight: 300;
+            margin-top: 4px;
+            animation: glowPulse 2s ease-in-out infinite;
+            background: rgba(212, 167, 106, 0.04);
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(212, 167, 106, 0.04);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(212, 167, 106, 0.08);
+            }
+        }
+
+        /* 选项点击碎片动画容器 */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            font-size: 12px;
+            color: var(--gold);
+            opacity: 0.8;
+            animation: particleFly 0.8s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes particleFly {
+            0% {
+                opacity: 0.9;
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        <!-- ===== P0: 启动页 ===== -->
+        <div id="page-start" class="page active">
+            <div class="start-bg-glow"></div>
+            <div class="rain-container" id="rainContainer"></div>
+            <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%;">
+                <div class="start-title">你的广东歌人格</div>
+                <div class="start-sub">— 港乐灵魂检测 —</div>
+                <div class="start-quote">
+                    你听过很多粤语歌<br />
+                    但你知道<br />
+                    哪一首歌才是你的人生吗？
+                    <span>⋯ 答案藏在你的选择里 ⋯</span>
+                </div>
+                <button class="btn-start" id="btnStart">开始测试</button>
+            </div>
+        </div>
+
+        <!-- ===== P1: 答题页 ===== -->
+        <div id="page-quiz" class="page">
+            <div class="quiz-header">
+                <span class="quiz-progress-text">第 <strong id="qNum">1</strong> / 12 题</span>
+                <span class="quiz-progress-text" id="qProgressPct" style="font-size:12px;">0%</span>
+            </div>
+            <div class="quiz-progress-bar">
+                <div class="fill" id="progressFill"></div>
+            </div>
+            <div class="quiz-question" id="qText">加载中...</div>
+            <div class="quiz-options" id="qOptions"></div>
+        </div>
+
+        <!-- ===== P2: 加载页 ===== -->
+        <div id="page-loading" class="page">
+            <div class="loading-ring"></div>
+            <div class="loading-text">正在解析你的 <em>港乐灵魂</em> …</div>
+            <div class="loading-names" id="loadingNames">
+                <span class="name-flash show">陈奕迅</span>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.02);letter-spacing:6px;margin-top:12px;font-weight:300;">
+                你听过的歌 · 正在重新组成你
+            </div>
+        </div>
+
+        <!-- ===== P3: 结果页 ===== -->
+        <div id="page-result" class="page">
+            <div class="result-scroll" id="resultContent">
+                <!-- 动态渲染 -->
+            </div>
+        </div>
+
+        <!-- ===== P4: 海报页 ===== -->
+        <div id="page-poster" class="page">
+            <div class="poster-container" id="posterContainer">
+                <div class="poster-bg"></div>
+                <div class="poster-neon"></div>
+                <div class="poster-rain" id="posterRain"></div>
+                <div class="poster-content" id="posterContent">
+                    <!-- 动态渲染 -->
+                </div>
+            </div>
+            <div class="poster-actions">
+                <button class="btn-poster" id="btnPosterBack">返回结果</button>
+                <button class="btn-poster primary" id="btnPosterSave">保存海报</button>
+            </div>
+        </div>
+
+        <!-- ===== 粒子容器 ===== -->
+        <div class="particle-container" id="particleContainer"></div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // DATA
+        // ============================================================
+
+        // 所有题目数据 (按Q1-Q12)
+        const QUESTIONS = [{
+            id: 1,
+            text: '爱情对你来说最重要的是？',
+            options: [
+                { text: '即使遍体鳞伤，也曾认真爱过', primary: '陈奕迅' },
+                { text: '找到那个灵魂相认的人', primary: '张敬轩' },
+                { text: '有勇气去爱', primary: '杨千嬅' },
+                { text: '长久稳定的陪伴', primary: '张天赋' },
+                { text: '被坚定选择', primary: 'Gareth.T' },
+                { text: '一起慢慢变老', primary: 'CallStar' }
+            ]
+        }, {
+            id: 2,
+            text: '深夜最容易想起什么？',
+            options: [
+                { text: '放不下的人', primary: '陈奕迅' },
+                { text: '曾经错过的人', primary: '古巨基' },
+                { text: '人生没有答案的问题', primary: '林家谦' },
+                { text: '世界隐藏的故事', primary: '谢安琪' },
+                { text: '一些奇怪又浪漫的幻想', primary: '王菀之' },
+                { text: '天马行空的新创意', primary: 'Serrini' }
+            ]
+        }, {
+            id: 3,
+            text: '你最欣赏自己什么？',
+            options: [
+                { text: '深情', primary: '陈奕迅' },
+                { text: '忠诚', primary: '张敬轩' },
+                { text: '坚强', primary: '容祖儿' },
+                { text: '勇敢', primary: '杨千嬅' },
+                { text: '真实', primary: '蓝奕邦' },
+                { text: '乐观', primary: '姜涛' }
+            ]
+        }, {
+            id: 4,
+            text: '面对失恋时',
+            options: [
+                { text: '不断回忆细节', primary: '陈奕迅' },
+                { text: '相信缘分会有答案', primary: '张敬轩' },
+                { text: '告诉自己重新开始', primary: '容祖儿' },
+                { text: '努力成长', primary: '李幸倪' },
+                { text: '尝试理解发生的一切', primary: '陈健安' },
+                { text: '把情绪写成作品', primary: 'Serrini' }
+            ]
+        }, {
+            id: 5,
+            text: '如果可以拥有一种能力',
+            options: [
+                { text: '读懂人心', primary: '张敬轩' },
+                { text: '回到过去', primary: '陈奕迅' },
+                { text: '看见未来', primary: '姜涛' },
+                { text: '改变世界', primary: '柳应廷' },
+                { text: '创造世界', primary: 'Serrini' },
+                { text: '理解世界', primary: '林家谦' }
+            ]
+        }, {
+            id: 6,
+            text: '哪种歌词最容易让你流泪？',
+            options: [
+                { text: '爱而不得', primary: '陈奕迅' },
+                { text: '生离死别', primary: 'CallStar' },
+                { text: '成长遗憾', primary: '古巨基' },
+                { text: '自我和解', primary: '陈健安' },
+                { text: '人生哲思', primary: '林家谦' },
+                { text: '理想与现实', primary: '谢安琪' }
+            ]
+        }, {
+            id: 7,
+            text: '你最向往的人生状态',
+            options: [
+                { text: '轰轰烈烈爱一次', primary: '杨千嬅' },
+                { text: '与灵魂伴侣白头到老', primary: '张敬轩' },
+                { text: '自由自在做自己', primary: 'Serrini' },
+                { text: '成为更好的自己', primary: '姜涛' },
+                { text: '完成梦想', primary: 'Supper Moment' },
+                { text: '活成理想中的人', primary: '蓝奕邦' }
+            ]
+        }, {
+            id: 8,
+            text: '如果朋友形容你',
+            options: [
+                { text: '恋爱脑', primary: '陈奕迅' },
+                { text: '长情', primary: '张敬轩' },
+                { text: '可靠', primary: 'CallStar' },
+                { text: '有主见', primary: '蓝奕邦' },
+                { text: '感性', primary: '王菀之' },
+                { text: '特别', primary: 'Serrini' }
+            ]
+        }, {
+            id: 9,
+            text: '你相信什么？',
+            options: [
+                { text: '真爱', primary: '杨千嬅' },
+                { text: '宿命', primary: '张敬轩' },
+                { text: '成长', primary: '容祖儿' },
+                { text: '梦想', primary: '柳应廷' },
+                { text: '创造力', primary: 'Serrini' },
+                { text: '人性', primary: '谢安琪' }
+            ]
+        }, {
+            id: 10,
+            text: '你的人生关键词',
+            options: [
+                { text: '执念', primary: '陈奕迅' },
+                { text: '认定', primary: '张敬轩' },
+                { text: '重生', primary: '李幸倪' },
+                { text: '陪伴', primary: 'CallStar' },
+                { text: '观察', primary: '谢安琪' },
+                { text: '思考', primary: '林家谦' }
+            ]
+        }, {
+            id: 11,
+            text: '最吸引你的句子',
+            options: [
+                { text: '"我仍然爱着。"', primary: '陈奕迅' },
+                { text: '"我仍然相信。"', primary: '张敬轩' },
+                { text: '"我仍然成长。"', primary: '容祖儿' },
+                { text: '"我仍然坚持。"', primary: 'Supper Moment' },
+                { text: '"我仍然好奇。"', primary: '王菀之' },
+                { text: '"我仍然自由。"', primary: 'Serrini' }
+            ]
+        }, {
+            id: 12,
+            text: '生命结束前你最想留下什么？',
+            options: [
+                { text: '深爱过的证明', primary: '陈奕迅' },
+                { text: '被理解的灵魂', primary: '张敬轩' },
+                { text: '改变过的人', primary: '容祖儿' },
+                { text: '追过的梦想', primary: '柳应廷' },
+                { text: '创造过的作品', primary: 'Serrini' },
+                { text: '看透世界后的温柔', primary: '谢安琪' }
+            ]
+        }];
+
+        // 所有人格数据 (结果页)
+        const PERSONA_DATA = {
+            '陈奕迅': {
+                title: '偏执浪漫家',
+                match: 94,
+                dna: { 执念: 96, 孤独: 85, 浪漫: 78, 理性: 35 },
+                songs: ['一丝不挂', '无人之境', '于心有愧', '落花流水'],
+                analysis: '你不是放不下过去。你只是放不下那个曾经认真爱过的自己。你的人生不是在遗忘，而是在不断重演。一首歌，就能让你回到某个夜晚。',
+                keywords: ['执念', '痴缠', '不甘心', '自我拉扯'],
+                lyric: '月亮总不肯照亮情欲深处那道背影，你我像快快乐乐同游在异境，浪漫到一起惹绝症，不想说明，只想反应。',
+                lyricSource: '《无人之境》',
+                good: ['极度深情', '共情能力强', '记忆细腻'],
+                risk: ['容易内耗', '难以抽离', '过度投入'],
+                recommend: ['张敬轩', '林家谦']
+            },
+            '张敬轩': {
+                title: '灵魂认定者',
+                match: 92,
+                dna: { 认定: 92, 忠诚: 88, 敏感: 72, 宿命: 68 },
+                songs: ['灵魂相认', '披星戴月', '春秋', '井', '酷爱', '樱花树下'],
+                analysis: '你相信灵魂的约定。在你的世界里，爱不是选择，而是认出。你等待的从来不是完美，而是那个一眼就认出你的人。',
+                keywords: ['敏感', '固执', '忠诚', '认定', '宿命感'],
+                lyric: '我的最亲 知否此刻一对灵魂终相认了，无惧困难重重和你 惬然来成全今生。',
+                lyricSource: '《灵魂相认》',
+                good: ['忠诚坚定', '感知细腻', '有信念感'],
+                risk: ['固执己见', '易陷执念', '过度理想化'],
+                recommend: ['陈奕迅', '杨千嬅']
+            },
+            '古巨基': {
+                title: '遗憾收藏家',
+                match: 86,
+                dna: { 后悔: 78, 珍惜: 72, 责任感: 65, 错过: 58 },
+                songs: ['爱与诚', '爱得太迟', '花洒', '下次再见'],
+                analysis: '你擅长在遗憾中寻找意义。每一段错过都成为你灵魂的注脚，你比任何人都更懂得"如果当初"的重量。',
+                keywords: ['后悔', '珍惜', '错过', '责任感'],
+                lyric: '何不将一切抛低，志愿大过天，亦像世上蝼蚁，担忧要是无谓，拿花洒洗礼。',
+                lyricSource: '《花洒》',
+                good: ['重情重义', '有反省力', '珍惜当下'],
+                risk: ['容易后悔', '背负过多', '难向前看'],
+                recommend: ['陈奕迅', '陈健安']
+            },
+            '容祖儿': {
+                title: '重生爱人',
+                match: 88,
+                dna: { 独立: 82, 坚强: 78, 重启: 70, 成长: 66 },
+                songs: ['心之科学', '黄色大门', '搜神记', '天之骄女'],
+                analysis: '每一次跌倒都是重生的开始。你不怕结束，因为你知道每一次结束都指向一个更强大的自己。',
+                keywords: ['独立', '坚强', '重启', '成长'],
+                lyric: '忘掉谁是你，记住我亦有自己见地，无论你几高，身价亦低过青花瓷器。',
+                lyricSource: '《搜神记》',
+                good: ['独立坚强', '自我修复', '积极向上'],
+                risk: ['过于理性', '情感隔离', '难示弱'],
+                recommend: ['李幸倪', '杨千嬅']
+            },
+            '杨千嬅': {
+                title: '都市浪漫家',
+                match: 90,
+                dna: { 勇敢: 88, 真诚: 82, 爱情: 76, 执着: 70 },
+                songs: ['勇', '烈女', '再见二丁目', '飞女正传'],
+                analysis: '你相信爱情是这世上最值得的冒险。即使世界荒芜，你依然愿意为爱赴汤蹈火。',
+                keywords: ['勇敢', '真诚', '爱情', '执着'],
+                lyric: '世界将我包围，誓死都一齐，壮观得犹如，悬崖的婚礼，也许生于世上，无重要作为，仍有这种真爱会留低。',
+                lyricSource: '《飞女正传》',
+                good: ['勇敢无畏', '真诚热烈', '浪漫至死'],
+                risk: ['容易受伤', '过于冲动', '理想化'],
+                recommend: ['张敬轩', '陈奕迅']
+            },
+            '张天赋': {
+                title: '老派恋人',
+                match: 82,
+                dna: { 专一: 80, 稳定: 74, 慢热: 68, 陪伴: 62 },
+                songs: ['老派约会之必要', '记忆棉', '反对无效', '世一'],
+                analysis: '你相信慢工出细活，爱情也是。在这个速食的时代，你依然坚持用时间去证明一切。',
+                keywords: ['专一', '稳定', '慢热', '陪伴'],
+                lyric: '个个也爱你可惜谁都输给我，很感激这个你 只喜欢这个我明明极黑的我，能镀金只因你偏偏选中我，这世一的我。',
+                lyricSource: '《世一》',
+                good: ['专一可靠', '踏实稳重', '长情'],
+                risk: ['过于保守', '不善表达', '容易被动'],
+                recommend: ['CallStar', '张敬轩']
+            },
+            'Gareth.T': {
+                title: '情绪价值大师',
+                match: 80,
+                dna: { 温柔: 76, 陪伴: 70, 安全感: 64, 共情: 60 },
+                songs: ['紧急联系人', '劲浪漫 超温馨', '泥菩萨', '用背脊唱情歌'],
+                analysis: '你是情绪的容器，也是温暖的出口。你懂得如何接住别人的脆弱，却常常忘了照顾自己。',
+                keywords: ['温柔', '陪伴', '安全感'],
+                lyric: '眼泪若嫌多，用背脊唱情歌，难道从后脑可以望穿我，心里痛什么，正面像全裸，遮丑的布，就别来戮破。',
+                lyricSource: '《用背脊唱情歌》',
+                good: ['温柔体贴', '共情力强', '善于倾听'],
+                risk: ['过度付出', '自我忽视', '情绪负担重'],
+                recommend: ['陈奕迅', '王菀之']
+            },
+            '林家谦': {
+                title: '深夜思想家',
+                match: 84,
+                dna: { 孤独: 74, 哲学: 70, 观察: 66, 思考: 62 },
+                songs: ['在空中的这一秒', '无答案', '列车上对坐着的两个人', '某种老朋友'],
+                analysis: '你在深夜与自己对话。世界越是喧嚣，你越需要安静。你追求的从来不是答案，而是思考本身。',
+                keywords: ['孤独', '哲学', '观察', '思考'],
+                lyric: '能暂时怀念某种老朋友，不过未能共享一叶舟，彼此都处身洪流如何挣扎沉浮，连回想起当初手牵手也颤抖。',
+                lyricSource: '《某种老朋友》',
+                good: ['思想深邃', '洞察力强', '自省'],
+                risk: ['过度内耗', '社交疏离', '悲观倾向'],
+                recommend: ['陈奕迅', 'Serrini']
+            },
+            '蓝奕邦': {
+                title: '理想主义观察者',
+                match: 78,
+                dna: { 独立思考: 72, 表达欲: 68, 价值观: 64, 理想: 60 },
+                songs: ['你纽约我伦敦', '围墙倒下前', '命', '禁色'],
+                analysis: '你用自己的方式理解世界。不盲从、不妥协，你相信每一个个体都有改变世界的可能。',
+                keywords: ['独立思考', '表达欲', '价值观'],
+                lyric: '要为重遇见，当修炼 使彼此 也幸免，为重逢请自持，在围墙倒下前。',
+                lyricSource: '《围墙倒下前》',
+                good: ['独立思考', '有原则', '表达力强'],
+                risk: ['理想主义', '与社会脱节', '固执'],
+                recommend: ['谢安琪', '林家谦']
+            },
+            'Supper Moment': {
+                title: '热血追梦人',
+                match: 86,
+                dna: { 梦想: 82, 青春: 76, 奋斗: 72, 热血: 68 },
+                songs: ['无尽', '幸福之歌', '沙燕之歌', '风筝'],
+                analysis: '你相信梦想值得用一生去追逐。即使前路未知，你依然愿意做那个逆风而行的人。',
+                keywords: ['梦想', '青春', '奋斗'],
+                lyric: '踏上这无尽旅途，谁又能鉴定你的丑恶与美好，来提步壮阔跑道，合十双手去祷告，人生梦一场革命至苍老。',
+                lyricSource: '《无尽》',
+                good: ['热血澎湃', '意志坚定', '感染力强'],
+                risk: ['容易 burnout', '忽视现实', '过于理想'],
+                recommend: ['姜涛', '柳应廷']
+            },
+            'CallStar': {
+                title: '温暖同行者',
+                match: 80,
+                dna: { 陪伴: 74, 守护: 70, 责任: 66, 温暖: 62 },
+                songs: ['天梯', '留下来的人', '没明日的恐惧', '此刻无价'],
+                analysis: '你是那个在黑暗中点亮灯火的人。不张扬，却坚定地站在所爱之人身边。',
+                keywords: ['陪伴', '守护', '责任'],
+                lyric: '许多人都相信离开的，人生走到该走的那时 痛着来话别，可知留低的与重生的却在这边，只可接受新生活的蜕变。',
+                lyricSource: '《留下来的人》',
+                good: ['温暖可靠', '有责任心', '善于守护'],
+                risk: ['过度付出', '忽视自我', '容易被依赖'],
+                recommend: ['张天赋', '陈健安']
+            },
+            'Serrini': {
+                title: '自由艺术家',
+                match: 88,
+                dna: { 创造力: 82, 自由: 78, 浪漫: 72, 独立: 68 },
+                songs: ['树木真美', '油尖旺金毛玲', '余地', '天雷'],
+                analysis: '你生来自由。不被定义、不被束缚，你用自己的方式创造世界。规则是别人的，你的世界由你书写。',
+                keywords: ['创造力', '自由', '浪漫'],
+                lyric: '小姐一生几多风波，几多辛酸几多凄楚，心里一切最悲痛之际，突然清楚，真美醒了么。',
+                lyricSource: '《树木真美》',
+                good: ['创造力丰富', '独立自由', '表达独特'],
+                risk: ['过于自我', '与现实脱节', '不稳定'],
+                recommend: ['林家谦', '王菀之']
+            },
+            '谢安琪': {
+                title: '都市观察者',
+                match: 82,
+                dna: { 现实: 70, 洞察: 66, 共情: 62, 温柔: 58 },
+                songs: ['家明', '山林道', '独家村', '年度之歌'],
+                analysis: '你用温柔的目光注视这个世界。看得见繁华背后的孤独，也懂得喧嚣之下的寂静。',
+                keywords: ['现实', '洞察', '共情'],
+                lyric: '人生艳如花卉，但限时美丽，一览始终无遗。',
+                lyricSource: '《年度之歌》',
+                good: ['洞察深刻', '共情力强', '温柔细腻'],
+                risk: ['易被现实所伤', '过度敏感', '悲观倾向'],
+                recommend: ['蓝奕邦', '林家谦']
+            },
+            '柳应廷': {
+                title: '灵魂再塑者',
+                match: 84,
+                dna: { 重生: 72, 轮回: 68, 因果: 64, 超越: 60 },
+                songs: ['人类群星闪耀时', '风灵物语', '大海少年', '坐看云起时'],
+                analysis: '你相信每一次结束都是新的开始。在生命的轮回中，你不断破碎、重组，成为更完整的自己。',
+                keywords: ['重生', '轮回', '因果', '超越'],
+                lyric: '群星一起叫苍穹融掉，盘旋万里青空上 俯瞰 逐吋对焦，殒灭时分秒，看人类即使渺小，谁在说我爱你那刻，情存万有才是美妙。',
+                lyricSource: '《人类群星闪耀时》',
+                good: ['自我重塑', '富有哲思', '超越性思维'],
+                risk: ['过于抽象', '与现实脱节', '难以落地'],
+                recommend: ['陈健安', '林家谦']
+            },
+            '姜涛': {
+                title: '成长实践派',
+                match: 80,
+                dna: { 成长: 74, 努力: 70, 突破: 66, 乐观: 62 },
+                songs: ['Dear My Friend', '作品的说话', '蒙着嘴说爱你', '好得太过分'],
+                analysis: '你相信每一步都算数。不空想、不等待，你用行动去成为那个你想成为的人。',
+                keywords: ['成长', '努力', '突破'],
+                lyric: '如果当初天空失去你的光芒，人生将会独处一个甚么的地方，孩子的岁月轻狂躲开世道疯狂，你天空海阔 我任意闯 跟你乱闯。',
+                lyricSource: '《Dear My Friend》',
+                good: ['行动力强', '乐观向上', '不断突破'],
+                risk: ['容易焦虑', '过度努力', '忽视内心'],
+                recommend: ['Supper Moment', '容祖儿']
+            },
+            '陈健安': {
+                title: '自我和解者',
+                match: 82,
+                dna: { 成熟: 70, 接纳: 66, 释怀: 62, 平和: 58 },
+                songs: ['恋爱脑之死', '在错误的宇宙寻找爱', '梨子', '重生'],
+                analysis: '你终于学会了与自己和解。不再苛责、不再逃避，你接纳了所有的不完美，也拥抱了真实的自己。',
+                keywords: ['成熟', '接纳', '释怀'],
+                lyric: '让我知平凡人能平凡开心，会谨记万大事事事亦专心，再小的小细节仍能，忘形时临危时完全拿得稳。',
+                lyricSource: '《梨子》',
+                good: ['成熟平和', '自洽', '接纳力强'],
+                risk: ['可能过于佛系', '失去锐气', '停滞'],
+                recommend: ['林家谦', '蓝奕邦']
+            },
+            '李幸倪': {
+                title: '逆风重生者',
+                match: 78,
+                dna: { 勇气: 72, 独立: 68, 重启: 64, 坚韧: 60 },
+                songs: ['今天终于一人回家', '月球下的人', '新牌仔', '天地一沙鸥'],
+                analysis: '你逆风而行，却不曾退缩。每一次跌倒都让你更坚强，每一次孤独都让你更完整。',
+                keywords: ['勇气', '独立', '重启'],
+                lyric: '仍然围绕你等于不争气，沙鸥不应恋栈沙丘，应唾弃你是否也有这勇气，你是否对我不放弃。',
+                lyricSource: '《天地一沙鸥》',
+                good: ['坚韧不拔', '独立自主', '自我重建'],
+                risk: ['过于孤立', '情感压抑', '难以依靠他人'],
+                recommend: ['容祖儿', '陈健安']
+            },
+            '王菀之': {
+                title: '月亮诗人',
+                match: 86,
+                dna: { 诗意: 78, 想象力: 74, 抽离感: 68, 浪漫: 64 },
+                songs: ['画意', '手望', '皇后餐厅', '月亮说'],
+                analysis: '你活在诗与梦之间。现实太吵，你选择在月亮下筑巢。你的世界是透明的，充满了光与影的舞蹈。',
+                keywords: ['诗意', '想象力', '抽离感'],
+                lyric: '天多灰也当是蓝色，深居于新生乐园，躯壳在这个世上零度里探赏，途中花瓣结霜 连手心都冻伤，又再妄想，连呼吸都灼伤 求天赐我胆量。',
+                lyricSource: '《手望》',
+                good: ['想象力丰富', '诗意表达', '独特视角'],
+                risk: ['过度抽离', '与现实脱节', '情绪波动'],
+                recommend: ['Serrini', '林家谦']
+            }
+        };
+
+        // 隐藏双人格
+        const HIDDEN_PERSONAS = [{
+            id: 'eason_lam',
+            name: '陈奕迅 × 林家谦',
+            title: '深渊浪漫主义者',
+            rarity: '3%',
+            core: ['执念', '孤独', '内耗', '共情'],
+            condition: (scores) => (scores['陈奕迅'] || 0) > 10 && (scores['林家谦'] || 0) > 8,
+            main: '陈奕迅',
+            sub: '林家谦',
+            lyric: '月亮总不肯照亮情欲深处那道背影，你我像快快乐乐同游在异境，浪漫到一起惹绝症，不想说明，只想反应。',
+            lyricSource: '《无人之境》',
+            songs: ['一丝不挂', '某种老朋友', '无人之境', '在空中的这一秒'],
+            analysis: '你在深渊里仰望星空。执念与孤独是你的双翼，你既渴望被理解，又害怕被看透。你是浪漫的囚徒，也是自由的诗人。',
+            keywords: ['执念', '孤独', '内耗', '共情']
+        }, {
+            id: 'hins_miriam',
+            name: '张敬轩 × 杨千嬅',
+            title: '宿命爱情家',
+            rarity: '5%',
+            core: ['认定', '忠诚', '浪漫', '等待'],
+            condition: (scores) => (scores['张敬轩'] || 0) > 8 && (scores['杨千嬅'] || 0) > 6,
+            main: '张敬轩',
+            sub: '杨千嬅',
+            lyric: '我的最亲 知否此刻一对灵魂终相认了，无惧困难重重和你 惬然来成全今生。世界将我包围，誓死都一齐。',
+            lyricSource: '《灵魂相认》×《飞女正传》',
+            songs: ['灵魂相认', '勇', '春秋', '飞女正传'],
+            analysis: '你相信爱情是宿命的安排。你忠诚于认定的灵魂，也勇敢地为爱赴汤蹈火。在你的世界里，爱是信仰，是唯一的答案。',
+            keywords: ['认定', '忠诚', '浪漫', '等待']
+        }, {
+            id: 'serrini_lam',
+            name: 'Serrini × 林家谦',
+            title: '月球居民',
+            rarity: '4%',
+            core: ['自由', '孤独', '艺术感', '抽离感'],
+            condition: (scores) => (scores['Serrini'] || 0) > 8 && (scores['林家谦'] || 0) > 6,
+            main: 'Serrini',
+            sub: '林家谦',
+            lyric: '小姐一生几多风波，几多辛酸几多凄楚，心里一切最悲痛之际，突然清楚，真美醒了么。能暂时怀念某种老朋友，不过未能共享一叶舟。',
+            lyricSource: '《树木真美》×《某种老朋友》',
+            songs: ['树木真美', '某种老朋友', '油尖旺金毛玲', '在空中的这一秒'],
+            analysis: '你住在月球上，俯瞰地球的喧嚣。自由是你的氧气，孤独是你的诗篇。你用艺术感触摸世界，却始终保持一段温柔的距离。',
+            keywords: ['自由', '孤独', '艺术感', '抽离感']
+        }];
+
+        // 所有人格列表 (用于加载页闪动)
+        const ALL_PERSONAS = Object.keys(PERSONA_DATA);
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentQuestion = 0;
+        let scores = {};
+        let answered = [];
+        let isQuizEnd = false;
+        let resultData = null;
+        let isHidden = false;
+        let loadingTimer = null;
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const $ = id => document.getElementById(id);
+        const pages = {
+            start: $('page-start'),
+            quiz: $('page-quiz'),
+            loading: $('page-loading'),
+            result: $('page-result'),
+            poster: $('page-poster')
+        };
+
+        const qNum = $('qNum');
+        const qText = $('qText');
+        const qOptions = $('qOptions');
+        const progressFill = $('progressFill');
+        const qProgressPct = $('qProgressPct');
+        const resultContent = $('resultContent');
+        const posterContent = $('posterContent');
+        const particleContainer = $('particleContainer');
+
+        // ============================================================
+        // UTILITY
+        // ============================================================
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function showPage(id) {
+            Object.keys(pages).forEach(key => {
+                const el = pages[key];
+                if (key === id) {
+                    el.classList.add('active');
+                    el.classList.remove('exit');
+                } else {
+                    el.classList.remove('active');
+                    el.classList.add('exit');
+                }
+            });
+        }
+
+        function getPersonaData(name) {
+            return PERSONA_DATA[name] || null;
+        }
+
+        function computeResult() {
+            // 计算得分
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const main = sorted.length > 0 ? sorted[0][0] : '陈奕迅';
+            const sub = sorted.length > 1 ? sorted[1][0] : null;
+
+            // 检查隐藏人格
+            let hidden = null;
+            for (const h of HIDDEN_PERSONAS) {
+                if (h.condition(scores)) {
+                    hidden = h;
+                    break;
+                }
+            }
+
+            if (hidden) {
+                const mainData = getPersonaData(hidden.main);
+                const subData = hidden.sub ? getPersonaData(hidden.sub) : null;
+                return {
+                    isHidden: true,
+                    hidden: hidden,
+                    main: hidden.main,
+                    sub: hidden.sub,
+                    mainData: mainData,
+                    subData: subData,
+                    score: scores[hidden.main] || 0,
+                    subScore: hidden.sub ? (scores[hidden.sub] || 0) : 0,
+                    allScores: scores
+                };
+            }
+
+            const mainData = getPersonaData(main);
+            const subData = sub ? getPersonaData(sub) : null;
+            return {
+                isHidden: false,
+                hidden: null,
+                main: main,
+                sub: sub,
+                mainData: mainData,
+                subData: subData,
+                score: scores[main] || 0,
+                subScore: sub ? (scores[sub] || 0) : 0,
+                allScores: scores
+            };
+        }
+
+        // 生成随机粒子 (歌词碎片)
+        function spawnParticles(x, y, count = 10) {
+            const container = particleContainer;
+            const fragments = ['♫', '♪', '♥', '✦', '·', '〜', '✧', '♬'];
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('span');
+                el.className = 'particle';
+                el.textContent = fragments[Math.floor(Math.random() * fragments.length)];
+                const angle = Math.random() * 2 * Math.PI;
+                const dist = 60 + Math.random() * 120;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 40;
+                el.style.left = (x + (Math.random() - 0.5) * 20) + 'px';
+                el.style.top = (y + (Math.random() - 0.5) * 20) + 'px';
+                el.style.setProperty('--tx', tx + 'px');
+                el.style.setProperty('--ty', ty + 'px');
+                el.style.fontSize = (10 + Math.random() * 12) + 'px';
+                el.style.color = `rgba(212,167,106,${0.2 + Math.random() * 0.4})`;
+                container.appendChild(el);
+                setTimeout(() => el.remove(), 900);
+            }
+        }
+
+        // ============================================================
+        // RAIN EFFECT
+        // ============================================================
+        function initRain(containerId) {
+            const container = $(containerId);
+            if (!container) return;
+            const count = 40;
+            for (let i = 0; i < count; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                const left = Math.random() * 100;
+                const delay = Math.random() * 3;
+                const duration = 1.5 + Math.random() * 2;
+                const height = 30 + Math.random() * 60;
+                drop.style.left = left + '%';
+                drop.style.animationDuration = duration + 's';
+                drop.style.animationDelay = delay + 's';
+                drop.style.height = height + 'px';
+                drop.style.opacity = 0.1 + Math.random() * 0.2;
+                container.appendChild(drop);
+            }
+        }
+
+        // ============================================================
+        // QUIZ LOGIC
+        // ============================================================
+        function renderQuestion(index) {
+            const q = QUESTIONS[index];
+            if (!q) return;
+            qNum.textContent = index + 1;
+            qText.textContent = q.text;
+            const pct = ((index) / QUESTIONS.length * 100);
+            progressFill.style.width = pct + '%';
+            qProgressPct.textContent = Math.round(pct) + '%';
+
+            const labels = 'ABCDEF';
+            qOptions.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option';
+                if (answered[index] === i) div.classList.add('selected');
+                div.innerHTML = `<span class="opt-label">${labels[i]}</span><span>${opt.text}</span>`;
+                div.dataset.index = i;
+                div.addEventListener('click', (e) => {
+                    if (isQuizEnd) return;
+                    const rect = div.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    spawnParticles(cx, cy, 12);
+                    selectOption(index, i);
+                });
+                qOptions.appendChild(div);
+            });
+        }
+
+        function selectOption(qIndex, optIndex) {
+            if (answered[qIndex] !== undefined) return;
+            const q = QUESTIONS[qIndex];
+            const opt = q.options[optIndex];
+            const persona = opt.primary;
+            if (!persona) return;
+            scores[persona] = (scores[persona] || 0) + 3;
+            // secondary 加1分 (如果有)
+            // 在本题数据中 secondary 未使用，但保留扩展
+            answered[qIndex] = optIndex;
+
+            // 更新UI
+            const items = qOptions.querySelectorAll('.quiz-option');
+            items.forEach((el, i) => {
+                if (i === optIndex) el.classList.add('selected');
+                else el.classList.remove('selected');
+            });
+
+            // 下一题
+            setTimeout(() => {
+                if (qIndex + 1 < QUESTIONS.length) {
+                    currentQuestion = qIndex + 1;
+                    renderQuestion(currentQuestion);
+                } else {
+                    isQuizEnd = true;
+                    finishQuiz();
+                }
+            }, 280);
+        }
+
+        function finishQuiz() {
+            // 显示加载页
+            showPage('loading');
+            startLoadingAnimation();
+        }
+
+        // ============================================================
+        // LOADING ANIMATION
+        // ============================================================
+        let loadingInterval = null;
+        let loadingFlashInterval = null;
+
+        function startLoadingAnimation() {
+            const container = $('loadingNames');
+            const allNames = ALL_PERSONAS;
+            let currentIndex = 0;
+            let flashCount = 0;
+            const maxFlashes = 18;
+
+            // 清空
+            container.innerHTML = '';
+            const span = document.createElement('span');
+            span.className = 'name-flash show';
+            span.textContent = allNames[0];
+            container.appendChild(span);
+
+            if (loadingFlashInterval) clearInterval(loadingFlashInterval);
+            if (loadingInterval) clearInterval(loadingInterval);
+
+            loadingFlashInterval = setInterval(() => {
+                const items = container.querySelectorAll('.name-flash');
+                items.forEach(el => el.classList.remove('show'));
+                const newSpan = document.createElement('span');
+                newSpan.className = 'name-flash show';
+                currentIndex = (currentIndex + 1) % allNames.length;
+                newSpan.textContent = allNames[currentIndex];
+                container.appendChild(newSpan);
+                // 移除过多的span
+                while (container.children.length > 6) {
+                    container.removeChild(container.firstChild);
+                }
+                flashCount++;
+                if (flashCount >= maxFlashes) {
+                    clearInterval(loadingFlashInterval);
+                    loadingFlashInterval = null;
+                    // 收束动画
+                    setTimeout(() => {
+                        // 显示结果
+                        showResult();
+                    }, 600);
+                }
+            }, 180);
+
+            // 额外音乐律动感 - 随机改变环的颜色
+            let hueShift = 0;
+            loadingInterval = setInterval(() => {
+                const ring = document.querySelector('.loading-ring');
+                if (ring) {
+                    hueShift = (hueShift + 2) % 30;
+                    const gold = `hsl(42, 60%, ${55 + Math.sin(hueShift * 0.1) * 8}%)`;
+                    ring.style.borderTopColor = gold;
+                }
+            }, 300);
+        }
+
+        // ============================================================
+        // RESULT
+        // ============================================================
+        function showResult() {
+            if (loadingFlashInterval) {
+                clearInterval(loadingFlashInterval);
+                loadingFlashInterval = null;
+            }
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+
+            const result = computeResult();
+            resultData = result;
+            isHidden = result.isHidden;
+
+            // 渲染结果
+            renderResult(result);
+            showPage('result');
+
+            // 触发DNA动画
+            setTimeout(() => {
+                document.querySelectorAll('.dna-fill').forEach(el => {
+                    const w = el.dataset.width || '0%';
+                    el.style.width = w;
+                });
+            }, 400);
+        }
+
+        function renderResult(result) {
+            const container = resultContent;
+            const isH = result.isHidden;
+            const main = result.main;
+            const mainData = result.mainData;
+            const sub = result.sub;
+            const subData = result.subData;
+            const hidden = result.hidden;
+
+            if (!mainData) {
+                container.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-muted);">无法解析人格，请重试</div>';
+                return;
+            }
+
+            let html = '';
+
+            // 隐藏人格标签
+            if (isH && hidden) {
+                html += `<div class="hidden-badge-glow" style="text-align:center;display:block;width:fit-content;margin:0 auto 8px;">✦ 隐藏双人格 · 稀有度 ${hidden.rarity} ✦</div>`;
+            }
+
+            // 标题区
+            html += `<div class="result-badge ${isH ? 'hidden-result' : ''}">`;
+            html += `<div class="label">你的粤语歌词人格</div>`;
+            if (isH && hidden) {
+                html += `<div class="name">${hidden.title}</div>`;
+                html += `<div class="sub-name">${hidden.name}</div>`;
+            } else {
+                html += `<div class="name">${mainData.title}</div>`;
+                html += `<div class="sub-name">${main}</div>`;
+            }
+            const matchPct = isH && hidden ? 98 : (mainData.match || 94);
+            html += `<div class="match">匹配度 <strong>${matchPct}%</strong></div>`;
+            if (isH && hidden) {
+                html += `<div style="font-size:11px;color:var(--text-muted);letter-spacing:2px;margin-top:2px;font-weight:300;">
+                            核心 · ${hidden.core.join(' · ')}
+                        </div>`;
+            }
+            html += `</div>`;
+
+            html += `<div class="result-divider"></div>`;
+
+            // DNA条形图
+            const dna = isH && hidden ? {
+                执念: 92,
+                孤独: 88,
+                浪漫: 76,
+                共情: 70
+            } : (mainData.dna || { 执念: 80, 孤独: 70, 浪漫: 60, 理性: 40 });
+
+            html += `<div class="dna-section">`;
+            html += `<div class="dna-title">— 灵魂 DNA —</div>`;
+            const dnaItems = Object.entries(dna);
+            dnaItems.forEach(([label, val]) => {
+                const pct = Math.min(val, 100);
+                html += `<div class="dna-item">
+                            <span class="dna-label">${label}</span>
+                            <div class="dna-track"><div class="dna-fill" data-width="${pct}%" style="width:0%;"></div></div>
+                            <span class="dna-pct">${pct}%</span>
+                        </div>`;
+            });
+            html += `</div>`;
+
+            // 灵魂歌单
+            const songs = isH && hidden ? (hidden.songs || ['一丝不挂', '某种老朋友', '无人之境']) : (mainData.songs || []);
+            html += `<div class="playlist-section">`;
+            html += `<div class="pl-title">— 灵魂歌单 —</div>`;
+            html += `<div class="playlist-tags">`;
+            songs.forEach(s => {
+                html += `<span class="tag">${s}</span>`;
+            });
+            html += `</div></div>`;
+
+            // 人格解析
+            const analysis = isH && hidden ? hidden.analysis : (mainData.analysis || '');
+            html += `<div class="analysis-section">`;
+            html += `<div class="an-title">— 人格解析 —</div>`;
+            html += `<div class="an-text">${analysis}</div>`;
+            html += `</div>`;
+
+            // 关键词
+            const keywords = isH && hidden ? hidden.keywords : (mainData.keywords || []);
+            html += `<div class="keywords-section">`;
+            html += `<div class="kw-title">— 关键词 —</div>`;
+            html += `<div class="keywords-tags">`;
+            keywords.forEach(kw => {
+                html += `<span class="kw">${kw}</span>`;
+            });
+            html += `</div></div>`;
+
+            // 代表歌词
+            const lyric = isH && hidden ? hidden.lyric : (mainData.lyric || '');
+            const lyricSrc = isH && hidden ? hidden.lyricSource : (mainData.lyricSource || '');
+            html += `<div class="lyric-section">`;
+            html += `<div class="ly-title">— 代表歌词 —</div>`;
+            html += `<div class="ly-text">${lyric}<span class="source">${lyricSrc}</span></div>`;
+            html += `</div>`;
+
+            // 优点 / 风险
+            const good = isH && hidden ? ['深度共情', '艺术感知', '灵魂洞察'] : (mainData.good || ['深情', '共情力强']);
+            const risk = isH && hidden ? ['内耗严重', '难以抽离', '孤独感'] : (mainData.risk || ['容易内耗', '过度投入']);
+            html += `<div class="traits-section">`;
+            html += `<div class="trait-box good"><div class="trait-label">✦ 优点</div><div class="trait-items">${good.join(' · ')}</div></div>`;
+            html += `<div class="trait-box risk"><div class="trait-label">⚠ 风险</div><div class="trait-items">${risk.join(' · ')}</div></div>`;
+            html += `</div>`;
+
+            // 推荐人格
+            const recs = isH && hidden ? ['张敬轩', 'Serrini'] : (mainData.recommend || ['张敬轩', '林家谦']);
+            html += `<div class="recommend-section">`;
+            html += `<div class="rec-title">— 推荐人格 —</div>`;
+            html += `<div class="rec-items">`;
+            recs.forEach(r => {
+                const rData = getPersonaData(r);
+                html += `<span class="rec-item"><span class="rec-name">${r}</span> ${rData ? '· ' + rData.title : ''}</span>`;
+            });
+            html += `</div></div>`;
+
+            // 隐藏人格标识
+            if (isH && hidden) {
+                html +=
+                    `<div style="text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:3px;padding:8px 0 4px;font-weight:300;opacity:0.3;">稀有度 ${hidden.rarity} · 双灵魂共鸣</div>`;
+            }
+
+            // 按钮区
+            html += `<div class="result-actions">`;
+            html += `<button class="btn-secondary" id="btnRetake">重新测试</button>`;
+            html += `<button class="btn-primary" id="btnSharePoster">生成海报</button>`;
+            html += `</div>`;
+
+            container.innerHTML = html;
+
+            // 绑定事件
+            const retakeBtn = document.getElementById('btnRetake');
+            if (retakeBtn) retakeBtn.addEventListener('click', resetQuiz);
+            const shareBtn = document.getElementById('btnSharePoster');
+            if (shareBtn) shareBtn.addEventListener('click', () => {
+                showPoster();
+            });
+        }
+
+        // ============================================================
+        // POSTER
+        // ============================================================
+        function showPoster() {
+            if (!resultData) return;
+            const container = posterContent;
+            const result = resultData;
+            const isH = result.isHidden;
+            const main = result.main;
+            const mainData = result.mainData;
+            const hidden = result.hidden;
+
+            let html = '';
+            html += `<div class="p-label">你的粤语歌词人格</div>`;
+            if (isH && hidden) {
+                html += `<div class="p-name-big" style="font-size:28px;">${hidden.title}</div>`;
+                html += `<div class="p-sub" style="font-size:12px;letter-spacing:2px;">${hidden.name}</div>`;
+            } else {
+                html += `<div class="p-name-big">${mainData ? mainData.title : main}</div>`;
+                html += `<div class="p-sub">${main}</div>`;
+            }
+            const matchPct = isH && hidden ? 98 : (mainData ? mainData.match : 94);
+            html += `<div class="p-match">匹配度 <strong>${matchPct}%</strong></div>`;
+            html += `<div class="p-divider"></div>`;
+            html += `<div class="p-tagline">— 你的港乐灵魂 —</div>`;
+
+            // 歌词
+            const lyric = isH && hidden ? hidden.lyric : (mainData ? mainData.lyric : '');
+            if (lyric) {
+                html += `<div class="p-lyric">${lyric.length > 60 ? lyric.substring(0, 60) + '…' : lyric}</div>`;
+            }
+
+            // 关键词
+            const keywords = isH && hidden ? hidden.core : (mainData ? mainData.keywords : []);
+            if (keywords && keywords.length) {
+                html +=
+                    `<div style="font-size:9px;color:rgba(255,255,255,0.08);letter-spacing:3px;margin-top:6px;font-weight:300;">${keywords.join(' · ')}</div>`;
+            }
+
+            html += `<div class="p-footer">广东歌人格 · 港乐灵魂检测</div>`;
+
+            container.innerHTML = html;
+
+            // 重新生成雨滴
+            const rainContainer = document.getElementById('posterRain');
+            if (rainContainer) {
+                rainContainer.innerHTML = '';
+                for (let i = 0; i < 20; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'rain-drop';
+                    drop.style.left = Math.random() * 100 + '%';
+                    drop.style.animationDuration = (1.8 + Math.random() * 2) + 's';
+                    drop.style.animationDelay = (Math.random() * 2) + 's';
+                    drop.style.height = (20 + Math.random() * 40) + 'px';
+                    drop.style.opacity = 0.05 + Math.random() * 0.1;
+                    rainContainer.appendChild(drop);
+                }
+            }
+
+            showPage('poster');
+        }
+
+        // ============================================================
+        // RESET
+        // ============================================================
+        function resetQuiz() {
+            currentQuestion = 0;
+            scores = {};
+            answered = [];
+            isQuizEnd = false;
+            resultData = null;
+            isHidden = false;
+            if (loadingFlashInterval) {
+                clearInterval(loadingFlashInterval);
+                loadingFlashInterval = null;
+            }
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            showPage('start');
+            // 重置进度
+            progressFill.style.width = '0%';
+            qProgressPct.textContent = '0%';
+            // 重置loading名字
+            const container = document.getElementById('loadingNames');
+            if (container) {
+                container.innerHTML = '<span class="name-flash show">陈奕迅</span>';
+            }
+        }
+
+        // ============================================================
+        // POSTER SAVE (using html2canvas)
+        // ============================================================
+        async function savePoster() {
+            const container = document.getElementById('posterContainer');
+            if (!container) return;
+            try {
+                const canvas = await html2canvas(container, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#0B1020',
+                    allowTaint: true,
+                    logging: false,
+                    width: container.scrollWidth,
+                    height: container.scrollHeight
+                });
+                const link = document.createElement('a');
+                link.download = '我的广东歌人格海报.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (e) {
+                console.warn('海报生成失败', e);
+                alert('生成海报失败，请尝试截图保存');
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        function init() {
+            // 雨滴
+            initRain('rainContainer');
+
+            // 启动按钮
+            document.getElementById('btnStart').addEventListener('click', () => {
+                // 重置状态
+                currentQuestion = 0;
+                scores = {};
+                answered = [];
+                isQuizEnd = false;
+                showPage('quiz');
+                renderQuestion(0);
+            });
+
+            // 海报按钮
+            document.getElementById('btnPosterBack').addEventListener('click', () => {
+                showPage('result');
+                // 重新渲染结果（保持数据）
+                if (resultData) {
+                    renderResult(resultData);
+                }
+            });
+
+            document.getElementById('btnPosterSave').addEventListener('click', savePoster);
+
+            // 默认显示启动页
+            showPage('start');
+
+            // 预加载部分数据
+            console.log('广东歌人格测试 v1.0 已加载');
+        }
+
+        // 页面加载完成后启动
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>
